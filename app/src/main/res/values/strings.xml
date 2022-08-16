@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Food Delivery</string>
+
+    <string name="no_internet_connection">Internet access is not available</string>
+    <string name="error_general">An error has occurred in the system</string>
+</resources>

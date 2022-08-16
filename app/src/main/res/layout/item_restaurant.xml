@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_16dp"
+        android:layout_marginEnd="@dimen/_16dp"
+        android:layout_marginStart="@dimen/_16dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout_itemRestaurant"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/itemBackgroundColor">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_itemRestaurant_horizontal65"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.65" />
+
+            <ImageView
+                android:id="@+id/imageView_itemRestaurant_restaurantImage"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:src="@drawable/place_holder"
+                android:scaleType="fitXY"
+                app:layout_constraintBottom_toTopOf="@+id/guideline_itemRestaurant_horizontal65"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView_itemRestaurant_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_8dp"
+                android:layout_marginTop="@dimen/_10dp"
+                android:textColor="@color/titleColor"
+                android:textSize="@dimen/_18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView_itemRestaurant_restaurantImage" />
+
+            <TextView
+                android:id="@+id/textView_itemRestaurant_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10dp"
+                android:layout_marginEnd="@dimen/_8dp"
+                android:textColor="@color/timeScoreColor"
+                android:textSize="@dimen/_12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView_itemRestaurant_restaurantImage" />
+
+            <ImageView
+                android:id="@+id/imageView_itemRestaurant_star"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_4dp"
+                android:src="@drawable/ic_star_icon"
+                app:layout_constraintBottom_toBottomOf="@+id/textView_itemRestaurant_score"
+                app:layout_constraintEnd_toStartOf="@+id/textView_itemRestaurant_score"
+                app:layout_constraintTop_toTopOf="@+id/textView_itemRestaurant_score" />
+
+            <TextView
+                android:id="@+id/textView_itemRestaurant_subTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_8dp"
+                android:textColor="@color/subTitleColor"
+                android:textSize="@dimen/_12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView_itemRestaurant_title" />
+
+            <ImageView
+                android:id="@+id/imageView_itemRestaurant_clock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_8dp"
+                android:src="@drawable/ic_clock_icon"
+                app:layout_constraintBottom_toBottomOf="@+id/textView_itemRestaurant_time"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView_itemRestaurant_time" />
+
+            <TextView
+                android:id="@+id/textView_itemRestaurant_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_4dp"
+                android:layout_marginBottom="@dimen/_8dp"
+                android:textColor="@color/timeScoreColor"
+                android:textSize="@dimen/_12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView_itemRestaurant_clock"
+                app:layout_constraintTop_toBottomOf="@+id/textView_itemRestaurant_subTitle" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+</layout>
