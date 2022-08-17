@@ -67,7 +67,7 @@ class RestaurantListFragment : BaseFragment() {
             when (it.status) {
                 Result.Status.LOADING -> showProgress()
                 Result.Status.ERROR -> {
-                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                    mHomeViewModel.mError.value = it.message
                     hideProgress()
                 }
                 Result.Status.SUCCESS -> {
@@ -86,15 +86,16 @@ class RestaurantListFragment : BaseFragment() {
 
     private fun handleRecentRestaurantsCall() {
         binding.swipeRefreshLayoutRestaurantListFragment.isRefreshing = false
-            if (mHomeViewModel.checkNetworkConnection())
-                mHomeViewModel.getRestaurants()
-            else
-                Toast.makeText(
-                    requireContext(),
-                    R.string.no_internet_connection,
-                    Toast.LENGTH_SHORT
-                ).show()
-
+        if (mHomeViewModel.checkNetworkConnection()) {
+            binding.textViewRestaurantListFragmentError.visibility = View.INVISIBLE
+            binding.recyclerViewRestaurantListFragment.visibility = View.VISIBLE
+            mHomeViewModel.getRestaurants()
+        } else {
+            binding.recyclerViewRestaurantListFragment.visibility = View.INVISIBLE
+            binding.textViewRestaurantListFragmentError.visibility = View.VISIBLE
+            mHomeViewModel.mError.value =
+                mHomeViewModel.mResourceUtilHelper.getResourceString(R.string.no_internet_connection)
+        }
     }
 
     private fun setupAdapter(list: List<Restaurant>) {

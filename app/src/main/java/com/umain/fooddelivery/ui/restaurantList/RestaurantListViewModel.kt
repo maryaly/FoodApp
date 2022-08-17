@@ -23,7 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class RestaurantListViewModel @Inject constructor(
     private val mNetworkHelper: NetworkHelper,
-    private val mResourceUtilHelper: ResourceUtilHelper,
+    val mResourceUtilHelper: ResourceUtilHelper,
     private val mRepository: Repository
 ) : ViewModel() {
 
