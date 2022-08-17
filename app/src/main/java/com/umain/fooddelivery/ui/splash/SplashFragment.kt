@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import com.umain.fooddelivery.R
@@ -34,7 +35,9 @@ class SplashFragment : Fragment() {
     }
 
     private fun navigateToHomeFragment() {
-        findNavController().navigate(R.id.action_splashFragment_to_homeFragment)
+        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
+            findNavController().navigate(R.id.action_splashFragment_to_homeFragment)
+        }
     }
 
 }

@@ -18,9 +18,12 @@ class RestaurantViewHolder(
         binding.textViewItemRestaurantScore.text = restaurant.rating.toString()
         binding.textViewItemRestaurantTitle.text = restaurant.name
         binding.textViewItemRestaurantSubTitle.text = restaurant.filterIds.toString()
-        if (restaurant.delivery_time_minutes != 1)
+        if (restaurant.delivery_time_minutes != 1 && restaurant.delivery_time_minutes != 60)
             binding.textViewItemRestaurantTime.text =
                 "${restaurant.delivery_time_minutes} mins"
+        else if (restaurant.delivery_time_minutes == 60)
+            binding.textViewItemRestaurantTime.text =
+                "1 hour"
         else
             binding.textViewItemRestaurantTime.text =
                 "${restaurant.delivery_time_minutes} min"

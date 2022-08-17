@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_splashFragment_to_homeFragment"
             app:destination="@id/homeFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true"
             app:enterAnim="@anim/anim_fade_in"
             app:exitAnim="@anim/anim_fade_out"
             app:popEnterAnim="@anim/anim_fade_in"

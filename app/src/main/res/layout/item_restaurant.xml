@@ -6,7 +6,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_16dp"
+        android:layout_marginTop="@dimen/_8dp"
+        android:layout_marginBottom="@dimen/_8dp"
         android:layout_marginEnd="@dimen/_16dp"
         android:layout_marginStart="@dimen/_16dp">
 
@@ -14,7 +15,7 @@
             android:id="@+id/constraintLayout_itemRestaurant"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/itemBackgroundColor">
+            android:background="@drawable/bg_top_curve">
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline_itemRestaurant_horizontal65"
