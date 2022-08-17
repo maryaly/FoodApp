@@ -104,7 +104,11 @@ class RestaurantListFragment : BaseFragment() {
     }
 
     private fun setupRestaurantAdapter(list: List<Restaurant>) {
-        mRestaurantAdapter = RestaurantAdapter(restaurantList = list, listener = listener)
+        mRestaurantAdapter = RestaurantAdapter(
+            restaurantList = list,
+            listener = listener,
+            mResourceUtilHelper = mRestaurantListViewModel.mResourceUtilHelper
+        )
         binding.recyclerViewRestaurantListFragment.adapter = mRestaurantAdapter
         binding.recyclerViewRestaurantListFragment.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewRestaurantListFragment.setHasFixedSize(true)

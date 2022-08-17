@@ -7,11 +7,13 @@ import coil.transform.RoundedCornersTransformation
 import com.umain.fooddelivery.R
 import com.umain.fooddelivery.data.model.Restaurant
 import com.umain.fooddelivery.databinding.ItemRestaurantBinding
+import com.umain.fooddelivery.utils.resource.ResourceUtilHelper
 import timber.log.Timber
 
 
 class RestaurantViewHolder(
-    private val binding: ItemRestaurantBinding
+    private val binding: ItemRestaurantBinding,
+    private val mResourceUtilHelper: ResourceUtilHelper
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(restaurant: Restaurant, listener: ClickListener) {
         Timber.d("$restaurant")
@@ -20,13 +22,12 @@ class RestaurantViewHolder(
         binding.textViewItemRestaurantSubTitle.text = restaurant.filterIds.toString()
         if (restaurant.delivery_time_minutes != 1 && restaurant.delivery_time_minutes != 60)
             binding.textViewItemRestaurantTime.text =
-                "${restaurant.delivery_time_minutes} mins"
+                "${restaurant.delivery_time_minutes} ${mResourceUtilHelper.getResourceString(R.string.mins)}"
         else if (restaurant.delivery_time_minutes == 60)
-            binding.textViewItemRestaurantTime.text =
-                "1 hour"
+            binding.textViewItemRestaurantTime.text = mResourceUtilHelper.getResourceString(R.string.one_hour)
         else
             binding.textViewItemRestaurantTime.text =
-                "${restaurant.delivery_time_minutes} min"
+                "${restaurant.delivery_time_minutes} ${mResourceUtilHelper.getResourceString(R.string.min)}"
 
         binding.imageViewItemRestaurantRestaurantImage.load(
             restaurant.image_url
