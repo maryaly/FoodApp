@@ -27,9 +27,6 @@ class RestaurantListViewModel @Inject constructor(
     private val mRepository: Repository
 ) : ViewModel() {
 
-    private var _mRestaurants = MutableLiveData<Result<RestaurantResponse>>()
-    val mRestaurants: LiveData<Result<RestaurantResponse>> = _mRestaurants
-
     private var _mFilter = MutableLiveData<Result<Filter>>()
     val mFilter: LiveData<Result<Filter>> = _mFilter
 
@@ -37,7 +34,7 @@ class RestaurantListViewModel @Inject constructor(
 
     var mError = MutableLiveData<String>()
 
-    private fun getAllFilters(restaurantList: List<Restaurant>) {
+    fun getAllFilters(restaurantList: List<Restaurant>) {
         for (restaurant in restaurantList) {
             mRestaurantOpen.postValue(getRestaurantOpen(restaurant.id))
             for (filter in restaurant.filterIds) {

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -14,17 +13,13 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.umain.fooddelivery.R
-import com.umain.fooddelivery.data.model.Restaurant
-import com.umain.fooddelivery.data.model.RestaurantResponse
-import com.umain.fooddelivery.data.model.RestaurantOpen
-import com.umain.fooddelivery.data.model.Result
+import com.umain.fooddelivery.data.model.*
 import com.umain.fooddelivery.databinding.FragmentRestaurantListBinding
+import com.umain.fooddelivery.ui.adapter.filter.FilterAdapter
 import com.umain.fooddelivery.ui.adapter.restaurant.ClickListener
 import com.umain.fooddelivery.ui.adapter.restaurant.RestaurantAdapter
 import com.umain.fooddelivery.ui.base.BaseFragment
 import com.umain.fooddelivery.ui.main.MainViewModel
-import com.umain.fooddelivery.utils.extentions.hideProgress
-import com.umain.fooddelivery.utils.extentions.showProgress
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -35,7 +30,9 @@ class RestaurantListFragment : BaseFragment() {
 
     private val mainViewModel: MainViewModel by activityViewModels()
     private val mRestaurantListViewModel: RestaurantListViewModel by viewModels()
-    private lateinit var mAdapter: RestaurantAdapter
+    private lateinit var mRestaurantAdapter: RestaurantAdapter
+    private lateinit var mFilterAdapter: FilterAdapter
+    var mFilterList = hashSetOf<Filter>()
 
     private var _binding: FragmentRestaurantListBinding? = null
     private val binding get() = _binding!!
@@ -70,25 +67,13 @@ class RestaurantListFragment : BaseFragment() {
     }
 
     override fun setupObservers() {
-
-        mRestaurantListViewModel.mRestaurants.observe(viewLifecycleOwner) {
-            when (it.status) {
-                Result.Status.LOADING -> showProgress()
-                Result.Status.ERROR -> {
-                    mRestaurantListViewModel.mError.value = it.message
-                    hideProgress()
-                }
-                Result.Status.SUCCESS -> {
-                    hideProgress()
-                    it.data?.let { data ->
-                        setupAdapter(data.restaurants)
-                    }
-                }
-            }
-        }
-
         mRestaurantListViewModel.mFilter.observe(viewLifecycleOwner, Observer {
-            Timber.d("Filter -> $it")
+            it.data?.let { data ->
+                mFilterList.add(data)
+                Timber.e("$mFilterList")
+                setupFilterAdapter(mFilterList)
+            }
+
         })
     }
 
@@ -97,7 +82,8 @@ class RestaurantListFragment : BaseFragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 mainViewModel.restaurantResponse.collectLatest {
                     Timber.d("restaurant collected: $it")
-                    setupAdapter(it.restaurants)
+                    setupRestaurantAdapter(it.restaurants)
+                    mRestaurantListViewModel.getAllFilters(it.restaurants)
                 }
             }
         }
@@ -117,11 +103,22 @@ class RestaurantListFragment : BaseFragment() {
         }
     }
 
-    private fun setupAdapter(list: List<Restaurant>) {
-        mAdapter = RestaurantAdapter(restaurantList = list, listener = listener)
-        binding.recyclerViewRestaurantListFragment.adapter = mAdapter
+    private fun setupRestaurantAdapter(list: List<Restaurant>) {
+        mRestaurantAdapter = RestaurantAdapter(restaurantList = list, listener = listener)
+        binding.recyclerViewRestaurantListFragment.adapter = mRestaurantAdapter
         binding.recyclerViewRestaurantListFragment.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewRestaurantListFragment.setHasFixedSize(true)
+    }
+
+    private fun setupFilterAdapter(list: HashSet<Filter>) {
+        mFilterAdapter = FilterAdapter(restaurantList = list, listener = listener)
+        binding.includeRestaurantListFragmentHeader.recyclerViewItemHeaderFilters.adapter =
+            mFilterAdapter
+        binding.includeRestaurantListFragmentHeader.recyclerViewItemHeaderFilters.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, true)
+        binding.includeRestaurantListFragmentHeader.recyclerViewItemHeaderFilters.setHasFixedSize(
+            true
+        )
     }
 
     private fun navigateToDetailFragment(restaurant: Restaurant, restaurantOpen: RestaurantOpen) {
