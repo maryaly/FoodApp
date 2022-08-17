@@ -37,53 +37,6 @@ class RestaurantListViewModel @Inject constructor(
 
     var mError = MutableLiveData<String>()
 
-
-    init {
-        getRestaurants()
-    }
-
-     fun getRestaurants() {
-        if (mNetworkHelper.isNetworkConnected()) {
-            _mRestaurants.postValue(Result.loading())
-            viewModelScope.launch(Dispatchers.IO) {
-                try {
-                    mRepository.getRestaurants().let { response ->
-                        if (response.isSuccessful) {
-                            _mRestaurants.postValue(Result.success(response.body()))
-                            mRestaurants.value?.data?.restaurants?.let {
-                                Timber.e("getRestaurants -> $it")
-                                getAllFilters(it)
-                            }
-                        } else {
-                            response.errorBody()?.let {
-                                _mRestaurants.postValue(
-                                    Result.error(
-                                        mResourceUtilHelper.getResourceString(R.string.error_general)
-                                    )
-                                )
-                            }
-                        }
-                    }
-                } catch (exp: Exception) {
-                    Timber.e(exp)
-                    _mRestaurants.postValue(
-                        Result.error(
-                            Constants.EMPTY_STRING,
-                            null
-                        )
-                    )
-                }
-            }
-        } else {
-            _mRestaurants.postValue(
-                Result.error(
-                    mResourceUtilHelper.getResourceString(R.string.no_internet_connection),
-                    null
-                )
-            )
-        }
-    }
-
     private fun getAllFilters(restaurantList: List<Restaurant>) {
         for (restaurant in restaurantList) {
             mRestaurantOpen.postValue(getRestaurantOpen(restaurant.id))
@@ -101,7 +54,7 @@ class RestaurantListViewModel @Inject constructor(
                 ).let { response ->
                     if (response.isSuccessful) {
                         _mFilter.postValue(Result.success(response.body()))
-                        Timber.e("Filter -> ***** ${mFilter.value}")
+                        Timber.d("Filter -> ***** ${mFilter.value}")
                     } else {
                         response.errorBody()?.let {
                             _mFilter.postValue(
@@ -134,7 +87,7 @@ class RestaurantListViewModel @Inject constructor(
                     ).let { response ->
                         if (response.isSuccessful)
                             open = response.body()!!
-                        Timber.e("open -> $open")
+                        Timber.d("open -> $open")
                     }
                 } catch (exp: Exception) {
                     Timber.e(exp)

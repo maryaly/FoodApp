@@ -2,8 +2,8 @@ package com.umain.fooddelivery.data.api
 
 
 import com.umain.fooddelivery.data.model.Filter
-import com.umain.fooddelivery.data.model.RestaurantResponse
 import com.umain.fooddelivery.data.model.RestaurantOpen
+import com.umain.fooddelivery.data.model.RestaurantResponse
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -12,7 +12,7 @@ class ApiHelperImpl @Inject constructor(
 ) : ApiHelper {
 
     override suspend fun getRestaurants()
-            : Response<RestaurantResponse> = mApiService.getRestaurants()
+            : RestaurantResponse = mApiService.getRestaurants()
 
     override suspend fun getFilters(
         id: String

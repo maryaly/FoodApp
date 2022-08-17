@@ -1,9 +1,8 @@
 package com.umain.fooddelivery.ui.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import com.umain.fooddelivery.R
+import androidx.appcompat.app.AppCompatActivity
 import com.umain.fooddelivery.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 

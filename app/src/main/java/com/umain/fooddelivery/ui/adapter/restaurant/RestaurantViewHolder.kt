@@ -14,7 +14,7 @@ class RestaurantViewHolder(
     private val binding: ItemRestaurantBinding
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(restaurant: Restaurant, listener: ClickListener) {
-        Timber.e("$restaurant")
+        Timber.d("$restaurant")
         binding.textViewItemRestaurantScore.text = restaurant.rating.toString()
         binding.textViewItemRestaurantTitle.text = restaurant.name
         binding.textViewItemRestaurantSubTitle.text = restaurant.filterIds.toString()
