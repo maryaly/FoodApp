@@ -32,7 +32,7 @@ class RestaurantListFragment : BaseFragment() {
     private val mRestaurantListViewModel: RestaurantListViewModel by viewModels()
     private lateinit var mRestaurantAdapter: RestaurantAdapter
     private lateinit var mFilterAdapter: FilterAdapter
-    var mFilterList = hashSetOf<Filter>()
+    @Volatile var mFilterList = hashSetOf<Filter>()
 
     private var _binding: FragmentRestaurantListBinding? = null
     private val binding get() = _binding!!
@@ -82,8 +82,8 @@ class RestaurantListFragment : BaseFragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 mainViewModel.restaurantResponse.collectLatest {
                     Timber.d("restaurant collected: $it")
-                    setupRestaurantAdapter(it.restaurants)
                     mRestaurantListViewModel.getAllFilters(it.restaurants)
+                    setupRestaurantAdapter(it.restaurants,mFilterList)
                 }
             }
         }
@@ -103,9 +103,10 @@ class RestaurantListFragment : BaseFragment() {
         }
     }
 
-    private fun setupRestaurantAdapter(list: List<Restaurant>) {
+    private fun setupRestaurantAdapter(list: List<Restaurant>, mFilterList: HashSet<Filter>) {
         mRestaurantAdapter = RestaurantAdapter(
             restaurantList = list,
+            filterList = mFilterList,
             listener = listener,
             mResourceUtilHelper = mRestaurantListViewModel.mResourceUtilHelper
         )

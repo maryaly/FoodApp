@@ -34,7 +34,7 @@ class RestaurantListViewModel @Inject constructor(
 
     var mError = MutableLiveData<String>()
 
-    fun getAllFilters(restaurantList: List<Restaurant>) {
+    @Synchronized fun getAllFilters(restaurantList: List<Restaurant>) {
         for (restaurant in restaurantList) {
             mRestaurantOpen.postValue(getRestaurantOpen(restaurant.id))
             for (filter in restaurant.filterIds) {

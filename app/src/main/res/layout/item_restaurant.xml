@@ -67,12 +67,13 @@
                 app:layout_constraintTop_toTopOf="@+id/textView_itemRestaurant_score" />
 
             <TextView
-                android:id="@+id/textView_itemRestaurant_subTitle"
+                android:id="@+id/textView_itemRestaurant_tags"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_8dp"
                 android:textColor="@color/subTitleColor"
                 android:textSize="@dimen/_12sp"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView_itemRestaurant_title" />
 
@@ -96,7 +97,7 @@
                 android:textSize="@dimen/_12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView_itemRestaurant_clock"
-                app:layout_constraintTop_toBottomOf="@+id/textView_itemRestaurant_subTitle" />
+                app:layout_constraintTop_toBottomOf="@+id/textView_itemRestaurant_tags" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>

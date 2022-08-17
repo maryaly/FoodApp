@@ -35,7 +35,7 @@ class SplashFragment : Fragment() {
     }
 
     private fun navigateToHomeFragment() {
-        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
+        lifecycleScope.launchWhenResumed {
             findNavController().navigate(R.id.action_splashFragment_to_homeFragment)
         }
     }
