@@ -6,9 +6,8 @@ object Constants {
     // Timeout
     const val TIME_OUT = 60L
 
-    // Pagination
-    const val NETWORK_PAGE_SIZE = 50
-    const val STARTING_PAGE_INDEX = 1
+    // Splash Delay
+    const val DELAY_2 = 2000L
 
     const val EMPTY_STRING = ""
 

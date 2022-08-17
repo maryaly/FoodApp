@@ -18,9 +18,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField "String", "RESTAURANT_URL", "\"https://restaurant-code-test.herokuapp.com/\""
-        buildConfigField "String", "BASE_URL", "\"https://www.postman.com/\""
-        buildConfigField "String", "KEY", "\"8313ff24de89d1c656cc\""
+        buildConfigField "String", "BASE_URL", "\"https://restaurant-code-test.herokuapp.com/\""
 
     }
 

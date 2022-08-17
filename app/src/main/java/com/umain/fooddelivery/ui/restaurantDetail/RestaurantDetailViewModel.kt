@@ -2,7 +2,7 @@ package com.umain.fooddelivery.ui.restaurantDetail
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.umain.fooddelivery.data.model.Restaurant
+import timber.log.Timber
 
 
 class RestaurantDetailViewModel : ViewModel() {
@@ -11,15 +11,19 @@ class RestaurantDetailViewModel : ViewModel() {
     var mFilters = MutableLiveData<String>()
     var mName = MutableLiveData<String>()
 
-    fun showInfo(model: Restaurant) {
-//        model.delivery_time_minutes.let { time ->
-//            mStatus.value = time.toString()
-//        }
-        model.filterIds.let { filters ->
+    fun showInfo(mArgs: RestaurantDetailFragmentArgs) {
+        Timber.d("IsOpen -> $mArgs")
+
+        if (mArgs.restaurantOpen.isCurrentlyOpen)
+            mStatus.value = "Open"
+        else
+            mStatus.value = "Close"
+
+        mArgs.restaurant.filterIds.let { filters ->
             mFilters.value = filters.toString()
         }
 
-        model.name.let { name ->
+        mArgs.restaurant.name.let { name ->
             mName.value = name
         }
     }

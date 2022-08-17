@@ -1,6 +1,7 @@
 package com.umain.fooddelivery.data.model
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class RestaurantOpen(
 
@@ -9,4 +10,4 @@ data class RestaurantOpen(
 
     @SerializedName("restaurant_id")
     val restaurantId: String
-)
+): Serializable

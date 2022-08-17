@@ -10,8 +10,7 @@ class Repository @Inject constructor(
     private val mApiHelper: ApiHelper
 ) {
 
-    suspend fun getCollection(apiKey: String) =
-        mApiHelper.getCollection(apiKey = apiKey)
+    suspend fun getRestaurants() = mApiHelper.getRestaurants()
 
     suspend fun getFilters(
         id: String

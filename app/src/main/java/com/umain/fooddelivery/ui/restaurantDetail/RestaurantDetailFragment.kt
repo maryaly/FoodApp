@@ -35,7 +35,7 @@ class RestaurantDetailFragment : BaseFragment() {
     }
 
     override fun setupView() {
-        mDetailViewModel.showInfo(mArgs.restaurant)
+        mDetailViewModel.showInfo(mArgs)
         showImages()
         setAnimation()
     }
@@ -62,11 +62,6 @@ class RestaurantDetailFragment : BaseFragment() {
                     memoryCachePolicy(CachePolicy.ENABLED)
                     crossfade(true)
                     error(R.drawable.place_holder)
-                    transformations(
-                        RoundedCornersTransformation(
-                            12f, 12f, 0f, 0f
-                        )
-                    )
                 }
 
         }

@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
-import com.umain.fooddelivery.BuildConfig
 import com.umain.fooddelivery.R
 import com.umain.fooddelivery.data.model.*
 import com.umain.fooddelivery.data.repository.Repository
@@ -28,36 +27,36 @@ class RestaurantListViewModel @Inject constructor(
     private val mRepository: Repository
 ) : ViewModel() {
 
-    private var _mCollection = MutableLiveData<Result<CollectionModel>>()
-    val mCollection: LiveData<Result<CollectionModel>> = _mCollection
+    private var _mRestaurants = MutableLiveData<Result<RestaurantResponse>>()
+    val mRestaurants: LiveData<Result<RestaurantResponse>> = _mRestaurants
 
     private var _mFilter = MutableLiveData<Result<Filter>>()
     val mFilter: LiveData<Result<Filter>> = _mFilter
 
-    var mRestaurants = MutableLiveData<List<Restaurant>>()
-    var mError = MutableLiveData<String>()
+    var mRestaurantOpen = MutableLiveData<RestaurantOpen>()
 
-    private var mJob: Job? = null
+    var mError = MutableLiveData<String>()
 
 
     init {
-        getCollection()
+        getRestaurants()
     }
 
-    private fun getCollection() {
+     fun getRestaurants() {
         if (mNetworkHelper.isNetworkConnected()) {
-            _mCollection.postValue(Result.loading())
+            _mRestaurants.postValue(Result.loading())
             viewModelScope.launch(Dispatchers.IO) {
                 try {
-                    mRepository.getCollection(
-                        BuildConfig.KEY
-                    ).let { response ->
+                    mRepository.getRestaurants().let { response ->
                         if (response.isSuccessful) {
-                            _mCollection.postValue(Result.success(response.body()))
-                            mRestaurants.value?.let { getAllFilters(it) }
+                            _mRestaurants.postValue(Result.success(response.body()))
+                            mRestaurants.value?.data?.restaurants?.let {
+                                Timber.e("getRestaurants -> $it")
+                                getAllFilters(it)
+                            }
                         } else {
                             response.errorBody()?.let {
-                                _mCollection.postValue(
+                                _mRestaurants.postValue(
                                     Result.error(
                                         mResourceUtilHelper.getResourceString(R.string.error_general)
                                     )
@@ -67,7 +66,7 @@ class RestaurantListViewModel @Inject constructor(
                     }
                 } catch (exp: Exception) {
                     Timber.e(exp)
-                    _mCollection.postValue(
+                    _mRestaurants.postValue(
                         Result.error(
                             Constants.EMPTY_STRING,
                             null
@@ -76,7 +75,7 @@ class RestaurantListViewModel @Inject constructor(
                 }
             }
         } else {
-            _mCollection.postValue(
+            _mRestaurants.postValue(
                 Result.error(
                     mResourceUtilHelper.getResourceString(R.string.no_internet_connection),
                     null
@@ -85,36 +84,24 @@ class RestaurantListViewModel @Inject constructor(
         }
     }
 
-    fun getRestaurants(item: Item) {
-        val output = item.response[0].body.replace("\n ", "").replace("\\\"", "")
-            .replace("{   \"restaurants\":", "")
-        val final = output.substring(0, output.length - 1)
-
-        val restaurantList = Gson().fromJson(final, Array<Restaurant>::class.java).asList()
-        Timber.d("$restaurantList")
-        mRestaurants.postValue(restaurantList)
-
-    }
-
     private fun getAllFilters(restaurantList: List<Restaurant>) {
         for (restaurant in restaurantList) {
+            mRestaurantOpen.postValue(getRestaurantOpen(restaurant.id))
             for (filter in restaurant.filterIds) {
-                callFilterApi(filter)
+                getFilter(filter)
             }
         }
     }
 
-    private fun callFilterApi(filter: String) {
+    private fun getFilter(filterId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 mRepository.getFilters(
-                    filter
+                    filterId
                 ).let { response ->
                     if (response.isSuccessful) {
                         _mFilter.postValue(Result.success(response.body()))
-                        async {
-
-                        }
+                        Timber.e("Filter -> ***** ${mFilter.value}")
                     } else {
                         response.errorBody()?.let {
                             _mFilter.postValue(
@@ -135,5 +122,30 @@ class RestaurantListViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    private fun getRestaurantOpen(restaurantId: String): RestaurantOpen? {
+        var open: RestaurantOpen? = null
+        if (mNetworkHelper.isNetworkConnected()) {
+            viewModelScope.launch(Dispatchers.IO) {
+                try {
+                    mRepository.restaurantOpen(
+                        restaurantId
+                    ).let { response ->
+                        if (response.isSuccessful)
+                            open = response.body()!!
+                        Timber.e("open -> $open")
+                    }
+                } catch (exp: Exception) {
+                    Timber.e(exp)
+
+                }
+            }
+        }
+        return open
+    }
+
+    fun checkNetworkConnection(): Boolean {
+        return mNetworkHelper.isNetworkConnected()
     }
 }

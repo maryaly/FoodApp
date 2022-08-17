@@ -11,6 +11,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.umain.fooddelivery.R
 import com.umain.fooddelivery.data.model.Restaurant
+import com.umain.fooddelivery.data.model.RestaurantResponse
+import com.umain.fooddelivery.data.model.RestaurantOpen
 import com.umain.fooddelivery.data.model.Result
 import com.umain.fooddelivery.databinding.FragmentRestaurantListBinding
 import com.umain.fooddelivery.ui.adapter.restaurant.ClickListener
@@ -32,7 +34,9 @@ class RestaurantListFragment : BaseFragment() {
 
     private val listener = object : ClickListener {
         override fun OnListenerClicked(restaurant: Restaurant) {
-            navigateToDetailFragment(restaurant)
+            mHomeViewModel.mRestaurantOpen.value?.let {
+                navigateToDetailFragment(restaurant, it)
+            }
         }
     }
 
@@ -47,17 +51,19 @@ class RestaurantListFragment : BaseFragment() {
     }
 
     override fun setupView() {
-
-
+        /* NO-OP */
     }
 
     override fun setupUiListener() {
-        /* NO-OP */
+        binding.swipeRefreshLayoutRestaurantListFragment.setOnRefreshListener {
+            handleRecentRestaurantsCall()
+            mHomeViewModel.getRestaurants()
+        }
     }
 
     override fun setupObservers() {
 
-        mHomeViewModel.mCollection.observe(viewLifecycleOwner) {
+        mHomeViewModel.mRestaurants.observe(viewLifecycleOwner) {
             when (it.status) {
                 Result.Status.LOADING -> showProgress()
                 Result.Status.ERROR -> {
@@ -66,13 +72,8 @@ class RestaurantListFragment : BaseFragment() {
                 }
                 Result.Status.SUCCESS -> {
                     hideProgress()
-                    it.data?.item?.get(0)?.let { firstItem ->
-                        mHomeViewModel.getRestaurants(firstItem)
-                        mHomeViewModel.mRestaurants.observe(
-                            viewLifecycleOwner
-                        ) { list ->
-                            setupAdapter(list)
-                        }
+                    it.data?.let { data ->
+                        setupAdapter(data.restaurants)
                     }
                 }
             }
@@ -83,6 +84,19 @@ class RestaurantListFragment : BaseFragment() {
         })
     }
 
+    private fun handleRecentRestaurantsCall() {
+        binding.swipeRefreshLayoutRestaurantListFragment.isRefreshing = false
+            if (mHomeViewModel.checkNetworkConnection())
+                mHomeViewModel.getRestaurants()
+            else
+                Toast.makeText(
+                    requireContext(),
+                    R.string.no_internet_connection,
+                    Toast.LENGTH_SHORT
+                ).show()
+
+    }
+
     private fun setupAdapter(list: List<Restaurant>) {
         mAdapter = RestaurantAdapter(restaurantList = list, listener = listener)
         binding.recyclerViewRestaurantListFragment.adapter = mAdapter
@@ -90,9 +104,12 @@ class RestaurantListFragment : BaseFragment() {
         binding.recyclerViewRestaurantListFragment.setHasFixedSize(true)
     }
 
-    private fun navigateToDetailFragment(restaurant: Restaurant) {
+    private fun navigateToDetailFragment(restaurant: Restaurant, restaurantOpen: RestaurantOpen) {
         val action =
-            RestaurantListFragmentDirections.actionHomeFragmentToDetailFragment(restaurant = restaurant)
+            RestaurantListFragmentDirections.actionHomeFragmentToDetailFragment(
+                restaurant = restaurant,
+                restaurantOpen = restaurantOpen
+            )
         findNavController().navigate(action)
     }
 

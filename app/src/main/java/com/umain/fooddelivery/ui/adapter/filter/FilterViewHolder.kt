@@ -3,7 +3,6 @@ package com.umain.fooddelivery.ui.adapter.filter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.request.CachePolicy
-import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
 import com.umain.fooddelivery.R
 import com.umain.fooddelivery.data.model.Restaurant
@@ -15,7 +14,7 @@ class FilterViewHolder(
     private val binding: ItemRestaurantBinding
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(restaurant: Restaurant) {
-        Timber.e("${restaurant}")
+        Timber.e("$restaurant")
         binding.textViewItemRestaurantScore.text = restaurant.rating.toString()
         binding.textViewItemRestaurantTitle.text = restaurant.name
         binding.textViewItemRestaurantSubTitle.text = restaurant.filterIds.toString()

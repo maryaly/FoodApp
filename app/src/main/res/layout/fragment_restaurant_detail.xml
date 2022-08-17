@@ -44,6 +44,18 @@
                 app:layout_constraintBottom_toTopOf="@+id/guideline_restaurantDetail_horizontal33"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <ProgressBar
+                android:id="@+id/progressBar_splashFragment_loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:layout_marginTop="@dimen/_10dp"
+                android:indeterminateDrawable="@drawable/progress_bar"
+                app:layout_constraintBottom_toTopOf="@+id/guideline_restaurantDetail_horizontal33"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView_restaurantDetail_detail"
                 android:layout_width="match_parent"

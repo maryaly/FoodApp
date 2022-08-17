@@ -3,8 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/splashFragment">
 
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.umain.fooddelivery.ui.splash.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash">
+        <action
+            android:id="@+id/action_splashFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/anim_fade_in"
+            app:exitAnim="@anim/anim_fade_out"
+            app:popEnterAnim="@anim/anim_fade_in"
+            app:popExitAnim="@anim/anim_fade_out" />
+    </fragment>
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.umain.fooddelivery.ui.restaurantList.RestaurantListFragment"
@@ -26,5 +39,8 @@
         <argument
             android:name="restaurant"
             app:argType="com.umain.fooddelivery.data.model.Restaurant" />
+        <argument
+            android:name="restaurantOpen"
+            app:argType="com.umain.fooddelivery.data.model.RestaurantOpen" />
     </fragment>
 </navigation>

@@ -34,9 +34,6 @@ object HiltModules {
     @Singleton
     fun provideBaseUrl() = BuildConfig.BASE_URL
 
-    @Provides
-    @Singleton
-    fun provideKey() = BuildConfig.KEY
 
     @Provides
     @Singleton
