@@ -17,7 +17,7 @@
     <dimen name="_48dp">48dp</dimen>
     <dimen name="_50dp">50dp</dimen>
     <dimen name="_80dp">80dp</dimen>
-    <dimen name="_144dp">144dp</dimen>
+    <dimen name="_160dp">160dp</dimen>
 
     <!-- sp Size -->
     <dimen name="_2sp">2sp</dimen>

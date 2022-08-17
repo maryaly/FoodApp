@@ -115,7 +115,7 @@ class RestaurantListFragment : BaseFragment() {
         binding.includeRestaurantListFragmentHeader.recyclerViewItemHeaderFilters.adapter =
             mFilterAdapter
         binding.includeRestaurantListFragmentHeader.recyclerViewItemHeaderFilters.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, true)
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.includeRestaurantListFragmentHeader.recyclerViewItemHeaderFilters.setHasFixedSize(
             true
         )

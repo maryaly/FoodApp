@@ -4,14 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <FrameLayout
-        android:layout_width="@dimen/_144dp"
-        android:layout_height="wrap_content">
+        android:layout_width="@dimen/_160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_16dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout_itemFilter"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/itemBackgroundColor">
+            android:background="@drawable/bg_all_curve">
 
             <ImageView
                 android:id="@+id/imageView_itemFilter_filterImage"
@@ -19,20 +20,23 @@
                 android:layout_height="@dimen/_48dp"
                 android:src="@drawable/filter_top_rated"
                 android:scaleType="fitXY"
+                android:layout_marginTop="@dimen/_2dp"
+                android:layout_marginBottom="@dimen/_2dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
 
             <TextView
                 android:id="@+id/textView_itemFilter_title"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_8dp"
-                android:layout_marginTop="@dimen/_10dp"
                 android:textColor="@color/titleColor"
                 android:textSize="@dimen/_18sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
+                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/imageView_itemFilter_filterImage"
+                app:layout_constraintBottom_toBottomOf="@id/imageView_itemFilter_filterImage"
                 app:layout_constraintTop_toTopOf="@+id/imageView_itemFilter_filterImage" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
