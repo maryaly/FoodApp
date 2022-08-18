@@ -2,6 +2,6 @@ package com.umain.fooddelivery.ui.adapter.restaurant
 
 import com.umain.fooddelivery.data.model.Restaurant
 
-interface ClickListener {
+interface RestaurantClickListener {
     fun OnListenerClicked(restaurant: Restaurant)
 }

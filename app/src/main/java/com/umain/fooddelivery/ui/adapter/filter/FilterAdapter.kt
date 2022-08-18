@@ -4,13 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.umain.fooddelivery.data.model.Filter
-import com.umain.fooddelivery.data.model.Restaurant
 import com.umain.fooddelivery.databinding.ItemFilterBinding
-import com.umain.fooddelivery.databinding.ItemRestaurantBinding
-import com.umain.fooddelivery.ui.adapter.restaurant.ClickListener
 
 class FilterAdapter(
-    private val listener: ClickListener,
+    private val listener: FilterClickListener,
     private val restaurantList: HashSet<Filter>
 ) : RecyclerView.Adapter<FilterViewHolder>() {
 
@@ -23,7 +20,7 @@ class FilterAdapter(
 
     override fun onBindViewHolder(holder: FilterViewHolder, position: Int) {
         val restaurant = restaurantList.elementAt(position)
-        holder.bind(restaurant)
+        holder.bind(restaurant,listener)
     }
 
     override fun getItemCount(): Int = restaurantList.size

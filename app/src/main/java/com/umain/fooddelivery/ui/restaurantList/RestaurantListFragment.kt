@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -13,11 +14,14 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.umain.fooddelivery.R
-import com.umain.fooddelivery.data.model.*
+import com.umain.fooddelivery.data.model.Filter
+import com.umain.fooddelivery.data.model.Restaurant
+import com.umain.fooddelivery.data.model.RestaurantOpen
 import com.umain.fooddelivery.databinding.FragmentRestaurantListBinding
 import com.umain.fooddelivery.ui.adapter.filter.FilterAdapter
-import com.umain.fooddelivery.ui.adapter.restaurant.ClickListener
+import com.umain.fooddelivery.ui.adapter.filter.FilterClickListener
 import com.umain.fooddelivery.ui.adapter.restaurant.RestaurantAdapter
+import com.umain.fooddelivery.ui.adapter.restaurant.RestaurantClickListener
 import com.umain.fooddelivery.ui.base.BaseFragment
 import com.umain.fooddelivery.ui.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,15 +36,54 @@ class RestaurantListFragment : BaseFragment() {
     private val mRestaurantListViewModel: RestaurantListViewModel by viewModels()
     private lateinit var mRestaurantAdapter: RestaurantAdapter
     private lateinit var mFilterAdapter: FilterAdapter
-    @Volatile var mFilterList = hashSetOf<Filter>()
+
+    @Volatile
+    var mFilterList = hashSetOf<Filter>()
+    private var mRestaurantList: List<Restaurant> = listOf()
 
     private var _binding: FragmentRestaurantListBinding? = null
     private val binding get() = _binding!!
 
-    private val listener = object : ClickListener {
+    private val restaurantListener = object : RestaurantClickListener {
         override fun OnListenerClicked(restaurant: Restaurant) {
             mRestaurantListViewModel.mRestaurantOpen.value?.let {
                 navigateToDetailFragment(restaurant, it)
+            }
+        }
+    }
+
+    private val filterListener = object : FilterClickListener {
+        override fun OnListenerClicked(filter: Filter) {
+            doFilter(filter.name)
+        }
+    }
+
+    private fun doFilter(name: String) {
+        var sortedRestaurantList: List<Restaurant> = listOf()
+        when (name) {
+            "Top Rated" -> {
+                sortedRestaurantList = mRestaurantList.sortedByDescending { it.rating }
+                setupRestaurantAdapter(sortedRestaurantList, mFilterList)
+            }
+
+            "Take-Out" -> {
+                sortedRestaurantList = mRestaurantList.filter { it.filterIds.contains("c67cd8a3-f191-4083-ad28-741659f214d7") }
+                setupRestaurantAdapter(sortedRestaurantList, mFilterList)
+            }
+
+            "Eat-in" -> {
+                sortedRestaurantList = mRestaurantList.filter { it.filterIds.contains("0017e59c-4407-453f-a5be-901695708015") }
+                setupRestaurantAdapter(sortedRestaurantList, mFilterList)
+            }
+
+            "Fast delivery" -> {
+                sortedRestaurantList = mRestaurantList.filter { it.filterIds.contains("23a38556-779e-4a3b-a75b-fcbc7a1c7a20") }
+                setupRestaurantAdapter(sortedRestaurantList, mFilterList)
+            }
+
+            "Fast food" -> {
+                sortedRestaurantList = mRestaurantList.filter { it.filterIds.contains("614fd642-3fa6-4f15-8786-dd3a8358cd78") }
+                setupRestaurantAdapter(sortedRestaurantList, mFilterList)
             }
         }
     }
@@ -82,8 +125,9 @@ class RestaurantListFragment : BaseFragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 mainViewModel.restaurantResponse.collectLatest {
                     Timber.d("restaurant collected: $it")
-                    mRestaurantListViewModel.getAllFilters(it.restaurants)
-                    setupRestaurantAdapter(it.restaurants,mFilterList)
+                    mRestaurantList = it.restaurants
+                    mRestaurantListViewModel.getAllFilters(mRestaurantList)
+                    setupRestaurantAdapter(mRestaurantList, mFilterList)
                 }
             }
         }
@@ -107,7 +151,7 @@ class RestaurantListFragment : BaseFragment() {
         mRestaurantAdapter = RestaurantAdapter(
             restaurantList = list,
             filterList = mFilterList,
-            listener = listener,
+            listener = restaurantListener,
             mResourceUtilHelper = mRestaurantListViewModel.mResourceUtilHelper
         )
         binding.recyclerViewRestaurantListFragment.adapter = mRestaurantAdapter
@@ -116,7 +160,7 @@ class RestaurantListFragment : BaseFragment() {
     }
 
     private fun setupFilterAdapter(list: HashSet<Filter>) {
-        mFilterAdapter = FilterAdapter(restaurantList = list, listener = listener)
+        mFilterAdapter = FilterAdapter(restaurantList = list, listener = filterListener)
         binding.includeRestaurantListFragmentHeader.recyclerViewItemHeaderFilters.adapter =
             mFilterAdapter
         binding.includeRestaurantListFragmentHeader.recyclerViewItemHeaderFilters.layoutManager =

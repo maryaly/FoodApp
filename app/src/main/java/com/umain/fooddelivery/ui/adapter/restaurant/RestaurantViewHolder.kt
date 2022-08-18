@@ -17,7 +17,7 @@ class RestaurantViewHolder(
     private val mResourceUtilHelper: ResourceUtilHelper
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(restaurant: Restaurant, listener: ClickListener, filterList: HashSet<Filter>) {
+    fun bind(restaurant: Restaurant, listener: RestaurantClickListener, filterList: HashSet<Filter>) {
 
         binding.textViewItemRestaurantScore.text = restaurant.rating.toString()
         binding.textViewItemRestaurantTitle.text = restaurant.name

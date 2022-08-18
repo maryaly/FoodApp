@@ -12,5 +12,6 @@ data class Restaurant(
     val filterIds: List<String>,
     val id: String,
     val name: String,
-    val image_url: String
+    val image_url: String,
+    var filters: List<Filter>? = null
 ) : Serializable

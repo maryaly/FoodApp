@@ -9,7 +9,7 @@ import com.umain.fooddelivery.databinding.ItemRestaurantBinding
 import com.umain.fooddelivery.utils.resource.ResourceUtilHelper
 
 class RestaurantAdapter(
-    private val listener: ClickListener,
+    private val listener: RestaurantClickListener,
     private val restaurantList: List<Restaurant>,
     private val filterList: HashSet<Filter>,
     private val mResourceUtilHelper: ResourceUtilHelper

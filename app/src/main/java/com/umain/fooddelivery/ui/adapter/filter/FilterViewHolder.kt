@@ -13,7 +13,8 @@ import timber.log.Timber
 class FilterViewHolder(
     private val binding: ItemFilterBinding
 ) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(filter: Filter) {
+
+    fun bind(filter: Filter, listener: FilterClickListener) {
         Timber.d("$filter")
         binding.textViewItemFilterTitle.text = filter.name
         binding.imageViewItemFilterFilterImage.load(
@@ -24,6 +25,9 @@ class FilterViewHolder(
             error(R.drawable.place_holder)
             transformations(RoundedCornersTransformation(
                 12f, 12f, 0f, 0f))
+        }
+        binding.constraintLayoutItemFilter.setOnClickListener {
+            listener.OnListenerClicked(filter)
         }
     }
 }
