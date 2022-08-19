@@ -160,7 +160,7 @@ class RestaurantListFragment : BaseFragment() {
     }
 
     private fun setupFilterAdapter(list: HashSet<Filter>) {
-        mFilterAdapter = FilterAdapter(restaurantList = list, listener = filterListener)
+        mFilterAdapter = FilterAdapter(filterList = list, listener = filterListener)
         binding.includeRestaurantListFragmentHeader.recyclerViewItemHeaderFilters.adapter =
             mFilterAdapter
         binding.includeRestaurantListFragmentHeader.recyclerViewItemHeaderFilters.layoutManager =

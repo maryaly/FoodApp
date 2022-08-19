@@ -3,7 +3,6 @@
   <color name="colorPrimary">#C4C7C8</color>
   <color name="colorPrimaryDark">#AFB3B4</color>
   <color name="colorAccent">#8323B6</color>
-  <color name="black">#000000</color>
   <color name="gray">#979C9F</color>
   <color name="light_gray">#e6e9ef</color>
   <color name="gray1">#585E61</color>
@@ -11,8 +10,11 @@
   <color name="red">#E84B4B</color>
 
 
+  <color name="white">#FFFFFF</color>
+  <color name="black">#000000</color>
   <color name="mainBackgroundColor">#F8F8F8</color>
   <color name="itemBackgroundColor">#FFFFFF</color>
+  <color name="itemSelectedBackgroundColor">#E2A364</color>
   <color name="titleColor">#1F2B2E</color>
   <color name="subTitleColor">#999999</color>
   <color name="timeScoreColor">#50555C</color>

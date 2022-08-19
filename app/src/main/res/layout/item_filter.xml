@@ -12,7 +12,7 @@
             android:id="@+id/constraintLayout_itemFilter"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/bg_all_curve">
+            android:background="@drawable/bg_all_curve_unselected">
 
             <ImageView
                 android:id="@+id/imageView_itemFilter_filterImage"
